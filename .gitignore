@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+env/
+venv/
+env_job_portal/
+
+# Django
+.env
+.env.*
+!.env.example
+db.sqlite3
+staticfiles/
+media/
+
+# Editor and operating system
+.DS_Store
+.vscode/
+.idea/
+
+# Node dependencies
+node_modules/
