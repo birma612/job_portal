@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Job Portal{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+
+   
+<header class="sticky top-0 z-50 border-b border-white/70 bg-white/85 shadow-sm backdrop-blur-xl">
+    <nav class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4">
+
+        <!-- Brand -->
+        <a href="{% url 'job-list' %}"
+           class="flex shrink-0 items-center gap-3 text-xl font-bold tracking-tight text-slate-900">
+            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-lg text-white shadow-md shadow-blue-200">
+                J
+            </span>
+            <span>Job<span class="text-blue-600">Sphere</span></span>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+
+            <a href="{% url 'job-list' %}"
+               class="rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-blue-700">
+                Find Jobs
+            </a>
+
+            {% if user.is_authenticated %}
+
+                {% if user.role == 'employer' %}
+                    <a href="{% url 'employer-dashboard' %}"
+                       class="rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-blue-700">
+                        Employer Dashboard
+                    </a>
+
+                    <a href="{% url 'create-job' %}"
+                       class="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-200 transition hover:shadow-lg">
+                        + Post a Job
+                    </a>
+                {% else %}
+                    <a href="{% url 'my-applications' %}"
+                       class="rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-blue-700">
+                        My Applications
+                    </a>
+                {% endif %}
+
+                <a href="{% url 'profile' %}"
+                   class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50">
+                    My Profile
+                </a>
+
+                <span class="hidden text-sm text-slate-500 md:inline">
+                    {{ user.username }}
+                </span>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-blue-200 transition hover:shadow-lg">
+                    Sign In
+                </a>
+
+            {% endif %}
+
+        </div>
+    </nav>
+</header>
+
+    {% if messages %}
+        <div class="mx-auto max-w-7xl space-y-2 px-5 pt-4">
+            {% for message in messages %}
+                <div class="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-800">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-12 border-t border-slate-200/70 bg-white/60 px-5 py-6 text-center text-sm text-slate-500">
+        © {% now "Y" %} JobPortal. Connecting talent with opportunity.
+    </footer>
+
+</body>
+</html>

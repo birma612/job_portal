@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 px-4 py-12">
+    <div class="mx-auto max-w-3xl">
+
+        <!-- Page Header -->
+        <div class="mb-8">
+            <a href="{% url 'job-list' %}"
+               class="mb-5 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-600">
+                ← Back to Jobs
+            </a>
+
+            <div class="flex items-center gap-4">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white bg-white/70 text-2xl shadow-lg shadow-blue-100/50 backdrop-blur-xl">
+                    💼
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight text-slate-900">
+                        Create a Job Posting
+                    </h1>
+                    <p class="mt-1 text-sm text-slate-500">
+                        Find the right talent for your team.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="rounded-3xl border border-white/80 bg-white/75 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-2xl sm:p-10">
+
+            <div class="mb-8 border-b border-slate-100 pb-6">
+                <h2 class="text-lg font-semibold text-slate-800">
+                    Job Information
+                </h2>
+                <p class="mt-1 text-sm text-slate-500">
+                    Complete the details below to publish your vacancy.
+                </p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}"
+                               class="mb-2 block text-sm font-semibold text-slate-700">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <p class="mt-1 text-xs text-slate-500">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex flex-col gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+                    <a href="{% url 'job-list' %}"
+                       class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:shadow-xl">
+                        Publish Job
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <p class="mt-5 text-center text-xs text-slate-400">
+            Please review the job details before publishing.
+        </p>
+    </div>
+</div>
+{% endblock %}
+/body>
+</html>

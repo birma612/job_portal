@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+
+{% block title %}Edit Job | JobPortal{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 px-4 py-10 sm:px-6">
+    <div class="mx-auto max-w-3xl">
+
+        <a href="{% url 'employer-dashboard' %}"
+           class="mb-6 inline-block text-sm font-medium text-blue-600 hover:text-blue-800">
+            ← Back to Dashboard
+        </a>
+
+        <div class="mb-8">
+            <p class="text-sm font-semibold uppercase tracking-widest text-blue-600">
+                Employer Workspace
+            </p>
+            <h1 class="mt-2 text-3xl font-bold text-slate-900">
+                Edit Job Posting
+            </h1>
+            <p class="mt-2 text-slate-500">
+                Update the details for {{ job.title }}.
+            </p>
+        </div>
+
+        <div class="rounded-3xl border border-white/80 bg-white/80 p-6 shadow-xl shadow-slate-200/50 sm:p-10">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}"
+                               class="mb-2 block text-sm font-semibold text-slate-700">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% for error in field.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex flex-wrap justify-end gap-3 border-t border-slate-100 pt-6">
+                    <a href="{% url 'employer-dashboard' %}"
+                       class="rounded-xl border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 hover:shadow-xl">
+                        Save Changes →
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

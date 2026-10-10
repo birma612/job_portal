@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | JobSphere</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-violet-100 text-slate-800 antialiased">
+    <main class="mx-auto max-w-3xl px-5 py-10 sm:px-8">
+
+        <nav
+            class="mb-8 flex items-center justify-between rounded-2xl border border-white/80 bg-white/60 px-5 py-4 shadow-lg backdrop-blur-2xl">
+            <a href="{% url 'job-list' %}" class="text-xl font-extrabold">
+                Job<span class="text-blue-600">Sphere</span>
+            </a>
+            <a href="{% url 'job-list' %}" class="text-sm font-semibold text-blue-600">
+                Browse Jobs →
+            </a>
+        </nav>
+
+        <section class="rounded-3xl border border-white/90 bg-white/55 p-6 shadow-xl backdrop-blur-2xl sm:p-9">
+            <div class="mb-8">
+                <div
+                    class="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white bg-gradient-to-br from-blue-100 to-violet-100 text-2xl font-extrabold text-blue-600 shadow-sm">
+                    {{ request.user.username|slice:":1"|upper }}
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tight">My Profile</h1>
+                <p class="mt-2 text-slate-500">
+                    Welcome, {{ request.user.username }}. Keep your professional information up to date.
+                </p>
+            </div>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="space-y-5">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="mb-2 block text-sm font-semibold text-slate-700">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+
+                    {% if field.name == 'resume' and profile.resume %}
+                    <p class="mt-2 text-sm text-slate-600">
+                        Current resume:
+                        <span class="font-semibold">{{ profile.resume.name|cut:"resumes/" }}</span>
+                    </p>
+                    {% endif %}
+
+              
+
+                    {% if field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ field.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit"
+                    class="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 px-5 py-3 font-bold text-white shadow-lg shadow-blue-500/20 transition hover:from-blue-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                    Save Profile
+                </button>
+            </form>
+        </section>
+
+        <footer class="py-6 text-center text-sm text-slate-500">
+            Built for your next career move <span class="text-blue-500">✦</span>
+        </footer>
+    </main>
+</body>
+
+</html>

@@ -1,277 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ job.title }} | Job Portal</title>
+{% extends "base.html" %}
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/output.css' %}">
-</head>
+{% block title %}{{ job.title }} | JobSphere{% endblock %}
 
-<body class="min-h-screen overflow-x-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-violet-100 text-slate-800 antialiased">
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-sky-50 via-white to-indigo-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl">
 
-    <!-- Ambient background -->
-    <div class="pointer-events-none fixed inset-0 overflow-hidden">
-        <div class="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-sky-300/40 blur-3xl"></div>
-        <div class="absolute right-0 top-20 h-96 w-96 rounded-full bg-violet-300/30 blur-3xl"></div>
-        <div class="absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-blue-200/50 blur-3xl"></div>
-    </div>
+        <!-- Back navigation -->
+        <a href="{% url 'job-list' %}"
+           class="mb-8 inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/70 px-5 py-3 text-sm font-semibold text-slate-600 shadow-sm backdrop-blur-xl transition hover:-translate-x-1 hover:text-indigo-600">
+            <span>←</span> Back to Jobs
+        </a>
 
-    <main class="relative mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-10 lg:py-12">
+        <!-- Main job card -->
+        <article class="overflow-hidden rounded-[2rem] border border-white/80 bg-white/75 shadow-[0_20px_70px_-25px_rgba(79,70,229,0.22)] backdrop-blur-2xl">
 
-        <!-- Glass navigation -->
-        <nav class="mb-8 flex items-center justify-between rounded-2xl border border-white/80 bg-white/60 px-5 py-4 shadow-lg shadow-slate-300/20 backdrop-blur-2xl sm:px-7">
-            <a href="{% url 'job-list' %}" class="flex items-center gap-3">
-                <span class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white bg-gradient-to-br from-blue-500 to-violet-500 text-lg font-black text-white shadow-lg shadow-blue-500/20">
-                    J
-                </span>
-                <span class="text-lg font-extrabold tracking-tight text-slate-800 sm:text-xl">
-                    Job<span class="text-blue-600">Sphere</span>
-                </span>
-            </a>
+            <!-- Header -->
+            <div class="p-6 sm:p-10 lg:p-12">
+                <div class="flex flex-col gap-7 sm:flex-row sm:items-start">
 
-            <a href="{% url 'job-list' %}" class="rounded-xl border border-white bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-white hover:text-blue-600">
-                ← All Jobs
-            </a>
-        </nav>
-
-        <!-- Breadcrumb -->
-        <div class="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
-            <a href="{% url 'job-list' %}" class="font-semibold text-blue-600 transition hover:text-violet-600">
-                Jobs
-            </a>
-            <span>/</span>
-            <span class="max-w-full break-words">{{ job.title }}</span>
-        </div>
-
-        <!-- Django messages -->
-        {% if messages %}
-            <div class="mb-6 space-y-3">
-                {% for message in messages %}
-                    <div class="rounded-2xl border border-white/90 bg-white/70 px-5 py-4 text-sm font-medium text-slate-700 shadow-lg shadow-slate-200/30 backdrop-blur-2xl">
-                        {{ message }}
+                    <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-500 to-indigo-600 text-3xl font-bold text-white shadow-xl shadow-indigo-200">
+                        {{ job.company_name|slice:":1"|upper }}
                     </div>
-                {% endfor %}
-            </div>
-        {% endif %}
 
-        <!-- Main job header -->
-        <section class="relative mb-8 overflow-hidden rounded-3xl border border-white/90 bg-white/55 p-6 shadow-xl shadow-slate-300/25 backdrop-blur-2xl sm:p-9 lg:p-10">
+                    <div class="min-w-0 flex-1">
+                        <span class="inline-flex rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+                            Job Opportunity
+                        </span>
 
-            <div class="pointer-events-none absolute -right-10 -top-16 h-64 w-64 rounded-full bg-blue-200/40 blur-3xl"></div>
-            <div class="pointer-events-none absolute bottom-0 right-1/4 h-32 w-48 rounded-full bg-violet-200/30 blur-3xl"></div>
+                        <h1 class="mt-4 break-words text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+                            {{ job.title }}
+                        </h1>
 
-            <div class="relative">
-                <div class="mb-7 flex flex-wrap items-start justify-between gap-5">
+                        <p class="mt-3 text-lg font-semibold text-slate-600">
+                            {{ job.company_name }}
+                        </p>
 
-                    <div class="flex min-w-0 flex-1 flex-col gap-5 sm:flex-row sm:items-start">
-
-                        <!-- Company initial -->
-                        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white bg-gradient-to-br from-blue-100 to-violet-100 text-2xl font-extrabold text-blue-600 shadow-md shadow-blue-100/50 sm:h-20 sm:w-20 sm:text-3xl">
-                            {{ job.company_name|slice:":1"|upper }}
-                        </div>
-
-                        <div class="min-w-0">
-                            <span class="inline-flex items-center gap-2 rounded-full border border-white bg-white/75 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 shadow-sm">
-                                <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
-                                Job Opening
+                        <div class="mt-5 flex flex-wrap gap-3">
+                            <span class="inline-flex items-center gap-2 rounded-full border border-slate-100 bg-white/80 px-4 py-2 text-sm text-slate-600 shadow-sm">
+                                <span>📍</span> {{ job.location }}
                             </span>
 
-                            <h1 class="mt-4 break-words text-3xl font-extrabold leading-tight tracking-tight text-slate-800 sm:text-4xl lg:text-5xl">
-                                {{ job.title }}
-                            </h1>
-
-                            <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500 sm:text-base">
-                                <span class="font-bold text-slate-700">
-                                    {{ job.company_name }}
-                                </span>
-                                <span class="hidden text-slate-300 sm:inline">•</span>
-                                <span>{{ job.location }}</span>
-                            </div>
+                            <span class="inline-flex items-center gap-2 rounded-full border border-slate-100 bg-white/80 px-4 py-2 text-sm text-slate-600 shadow-sm">
+                                <span>◷</span> Posted {{ job.date_posted|date:"M d, Y" }}
+                            </span>
                         </div>
                     </div>
 
-                    <!-- Apply action -->
-                    <div class="w-full shrink-0 sm:w-auto">
-                        {% if already_applied %}
-                            <button
-                                type="button"
-                                disabled
-                                class="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-6 py-3.5 text-sm font-bold text-emerald-700 opacity-90 sm:w-auto"
-                            >
-                                ✓ Already Applied
-                            </button>
-                        {% else %}
-                            <a
-                                href="{% url 'apply-job' job.pk %}"
-                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:from-blue-500 hover:to-violet-500 hover:shadow-xl hover:shadow-blue-500/25 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 sm:w-auto"
-                            >
-                                Apply Now
-                                <span aria-hidden="true">→</span>
-                            </a>
-                        {% endif %}
+                    <!-- Salary -->
+                    <div class="rounded-2xl border border-indigo-100/80 bg-gradient-to-br from-indigo-50 to-blue-50 p-5 sm:min-w-48">
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-indigo-500">
+                            Salary
+                        </p>
+                        <p class="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+                            ₹{{ job.salary|floatformat:2 }}
+                        </p>
+                        <p class="mt-1 text-xs text-slate-500">Compensation</p>
                     </div>
+
                 </div>
+            </div>
 
-                <!-- Job metadata -->
-                <div class="flex flex-wrap gap-3 border-t border-white/90 pt-6">
-                    <div class="inline-flex items-center gap-2 rounded-xl border border-white bg-white/65 px-4 py-3 text-sm text-slate-600 shadow-sm">
-                        <span class="text-lg text-blue-500">⌖</span>
-                        <span>{{ job.location }}</span>
-                    </div>
+            <!-- Divider -->
+            <div class="mx-6 border-t border-slate-200/80 sm:mx-10 lg:mx-12"></div>
 
-                    <div class="inline-flex items-center gap-2 rounded-xl border border-white bg-white/65 px-4 py-3 text-sm text-slate-600 shadow-sm">
-                        <span class="text-lg text-violet-500">◷</span>
-                        <span>Posted {{ job.date_posted }}</span>
-                    </div>
+            <!-- Description -->
+            <div class="p-6 sm:p-10 lg:p-12">
+                <section>
+                    <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                        About This Role
+                    </h2>
 
-                    <div class="inline-flex items-center gap-2 rounded-xl border border-white bg-white/65 px-4 py-3 text-sm text-slate-600 shadow-sm">
-                        <span class="text-lg text-emerald-500">₹</span>
-                        <span class="font-bold text-slate-800">{{ job.salary }}</span>
+                    <p class="mt-2 text-sm text-slate-500">
+                        Learn more about the position and its responsibilities.
+                    </p>
+
+                    <div class="mt-6 whitespace-pre-line break-words text-base leading-8 text-slate-600">{{ job.description }}</div>
+                </section>
+
+                <!-- Application actions -->
+                <div class="mt-10 rounded-2xl border border-indigo-100/80 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 p-5 sm:p-7">
+                    <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">
+                                Interested in this opportunity?
+                            </h3>
+                            <p class="mt-1 text-sm leading-6 text-slate-500">
+                                Take the next step in your career.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            {% if user.is_authenticated %}
+                                {% if user.role == "seeker" %}
+                                    {% if already_applied %}
+                                        <span class="inline-flex items-center gap-2 rounded-xl bg-emerald-100 px-5 py-3 font-semibold text-emerald-700">
+                                            ✓ Already Applied
+                                        </span>
+                                    {% else %}
+                                        <form method="post" action="{% url 'apply-job' job.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                class="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:shadow-xl">
+                                                Apply Now →
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                {% elif user.role == "employer" %}
+                                    <span class="rounded-xl bg-white/80 px-5 py-3 text-sm font-medium text-slate-600">
+                                        Viewing as employer
+                                    </span>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'login' %}"
+                                   class="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3.5 text-center font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:shadow-xl">
+                                    Sign In to Apply →
+                                </a>
+                            {% endif %}
+
+                            <a href="{% url 'job-list' %}"
+                               class="rounded-xl border border-slate-200 bg-white/90 px-5 py-3.5 text-center font-semibold text-slate-700 transition hover:border-indigo-200 hover:bg-white">
+                                Browse Jobs
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </article>
 
-        <!-- Main content and sidebar -->
-        <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <!-- Footer text -->
+        <p class="mt-8 text-center text-sm text-slate-500">
+            Built for your next career move <span class="text-indigo-500">✦</span>
+        </p>
 
-            <!-- Job description -->
-            <section class="relative overflow-hidden rounded-3xl border border-white/90 bg-white/55 p-6 shadow-lg shadow-slate-300/20 backdrop-blur-2xl sm:p-8 lg:p-9">
-
-                <div class="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-full bg-blue-100/50 blur-3xl"></div>
-
-                <div class="relative">
-                    <div class="mb-6 flex items-center gap-3">
-                        <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-white bg-gradient-to-br from-blue-100 to-violet-100 text-xl text-blue-600 shadow-sm">
-                            ✦
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800 sm:text-2xl">
-                                Job Description
-                            </h2>
-                            <p class="mt-1 text-sm text-slate-500">
-                                About this opportunity
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="whitespace-pre-line break-words text-sm leading-8 text-slate-600 sm:text-base">
-                        {{ job.description }}
-                    </div>
-                </div>
-            </section>
-
-            <!-- Job overview -->
-            <aside class="space-y-6 lg:sticky lg:top-6">
-
-                <section class="rounded-3xl border border-white/90 bg-white/60 p-6 shadow-lg shadow-slate-300/20 backdrop-blur-2xl">
-
-                    <h2 class="text-xl font-bold text-slate-800">
-                        Job Overview
-                    </h2>
-                    <p class="mt-1 text-sm text-slate-500">
-                        Key details at a glance
-                    </p>
-
-                    <div class="mt-6 space-y-5">
-
-                        <div class="flex items-start gap-3">
-                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white bg-blue-50 text-blue-600">
-                                ◈
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-                                    Company
-                                </p>
-                                <p class="mt-1 break-words font-bold text-slate-700">
-                                    {{ job.company_name }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white bg-emerald-50 text-emerald-600">
-                                ₹
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-                                    Salary
-                                </p>
-                                <p class="mt-1 break-words font-extrabold text-slate-800">
-                                    ₹{{ job.salary }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white bg-violet-50 text-violet-600">
-                                ⌖
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-                                    Location
-                                </p>
-                                <p class="mt-1 break-words font-bold text-slate-700">
-                                    {{ job.location }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white bg-amber-50 text-amber-600">
-                                ◷
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-                                    Posted On
-                                </p>
-                                <p class="mt-1 break-words font-bold text-slate-700">
-                                    {{ job.date_posted }}
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="mt-7 border-t border-white/90 pt-6">
-                        {% if already_applied %}
-                            <button
-                                type="button"
-                                disabled
-                                class="w-full cursor-not-allowed rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-3.5 text-sm font-bold text-emerald-700"
-                            >
-                                ✓ Application Submitted
-                            </button>
-                        {% else %}
-                            <a
-                                href="{% url 'apply-job' job.pk %}"
-                                class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:from-blue-500 hover:to-violet-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-                            >
-                                Apply for this Job →
-                            </a>
-                        {% endif %}
-                    </div>
-                </section>
-
-                <!-- Return to listings -->
-                <a
-                    href="{% url 'job-list' %}"
-                    class="flex items-center justify-center gap-2 rounded-2xl border border-white/90 bg-white/45 px-5 py-4 text-sm font-semibold text-slate-600 shadow-sm backdrop-blur-xl transition hover:bg-white/75 hover:text-blue-600"
-                >
-                    ← Browse More Jobs
-                </a>
-
-            </aside>
-        </div>
-
-        <footer class="py-8 text-center text-sm text-slate-500">
-            Your next career move starts here
-            <span class="text-blue-500">✦</span>
-        </footer>
-
-    </main>
-
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

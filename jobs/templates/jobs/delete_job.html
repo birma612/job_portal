@@ -1,0 +1,95 @@
+
+{% extends "base.html" %}
+
+{% block title %}Delete Job | JobPortal{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 px-4 py-12 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+
+        <!-- Back Navigation -->
+        <a href="{% url 'employer-dashboard' %}"
+           class="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-600">
+            ← Back to Dashboard
+        </a>
+
+        <!-- Confirmation Card -->
+        <div class="overflow-hidden rounded-3xl border border-white/80 bg-white/80 shadow-xl shadow-slate-200/50 backdrop-blur-2xl">
+
+            <!-- Header -->
+            <div class="border-b border-red-100 bg-red-50/70 px-6 py-8 text-center sm:px-10">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-red-100 bg-white text-3xl shadow-sm">
+                    🗑️
+                </div>
+
+                <h1 class="mt-5 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                    Delete Job Posting?
+                </h1>
+
+                <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-600">
+                    Are you sure you want to delete this job? Please review the details before continuing.
+                </p>
+            </div>
+
+            <!-- Job Details -->
+            <div class="p-6 sm:p-10">
+                <div class="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-5">
+                    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                        Job to be deleted
+                    </p>
+
+                    <h2 class="mt-3 text-xl font-bold text-slate-900">
+                        {{ job.title }}
+                    </h2>
+
+                    <p class="mt-1 font-medium text-slate-600">
+                        {{ job.company_name }}
+                    </p>
+
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="rounded-lg bg-white px-3 py-2 text-sm text-slate-600 shadow-sm">
+                            📍 {{ job.location }}
+                        </span>
+
+                        <span class="rounded-lg bg-white px-3 py-2 text-sm text-slate-600 shadow-sm">
+                            ₹{{ job.salary }}
+                        </span>
+
+                        <span class="rounded-lg bg-white px-3 py-2 text-sm text-slate-600 shadow-sm">
+                            Job ID: {{ job.pk }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Warning -->
+                <div class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
+                    <p class="text-sm leading-6 text-amber-800">
+                        <strong>Important:</strong> Deleting this job is permanent. Associated applications may also be deleted because of the current model relationships.
+                    </p>
+                </div>
+
+                <!-- Confirmation Form -->
+                <form method="post" class="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                    {% csrf_token %}
+
+                    <a href="{% url 'employer-dashboard' %}"
+                       class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-red-200 transition hover:-translate-y-0.5 hover:bg-red-700">
+                        <span>🗑️</span>
+                        Yes, Delete Job
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <p class="mt-5 text-center text-xs text-slate-400">
+            You can cancel and return to your dashboard without deleting anything.
+        </p>
+
+    </div>
+</div>
+{% endblock %}
