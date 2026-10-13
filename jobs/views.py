@@ -7,6 +7,9 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from .forms import JobForm
+from django.views.generic import TemplateView
+from .models import job
+
 
 # class JobListView(ListView):
 #     model = job
@@ -252,3 +255,19 @@ def job_applicants(request, pk):
             'total_applicants': applications.count(),
         }
     )
+
+
+
+class HomeView(TemplateView):
+    template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["latest_jobs"] = job.objects.order_by(
+            "-date_posted"
+        )[:6]
+
+        context["total_jobs"] = job.objects.count()
+
+        return context
